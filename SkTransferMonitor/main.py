@@ -85,6 +85,8 @@ def monitorTransferList():
         finally:
             lock.release()
         
+        if sleepTime < 0:
+            sleepTime = 1
         logging.info("Will check transfer list for: %s", str(sleepTime))     
         time.sleep(sleepTime)
          
@@ -104,6 +106,8 @@ def monitorListedPLayers():
          
         finally:
             lock.release()
+            
+        time.sleep(120)
             
 def monitorPlayer(playerCell):
     while True:

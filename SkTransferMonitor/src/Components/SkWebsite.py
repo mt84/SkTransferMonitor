@@ -66,7 +66,6 @@ class SkWebsite(SkAPI):
     def getPlayerLastTransfer(self, playerCell):
         """Return HTML div snippet containing player information from transfer list page."""
         response = self.opener.open("http://online.sokker.org/transfers_player/ID_human/" + playerCell.ID)
-        print "http://online.sokker.org/transfers_player/ID_human/" + playerCell.ID
         lines = response.readlines()
         numberOfLines = len(lines)
 
@@ -77,7 +76,7 @@ class SkWebsite(SkAPI):
                 playerTransferDiv.append(lines[i].replace("&", "&amp;"))
                 i = i + 1
                 while "content_close" not in lines[i]:
-                    playerTransferDiv.append(lines[i])
+                    playerTransferDiv.append(lines[i].replace("&", "&amp;"))
                     i = i + 1
                     if i == numberOfLines:
                         break  
@@ -93,8 +92,8 @@ class SkWebsite(SkAPI):
             clubSelling = clubSelling[clubSelling.rfind("/") + 1:]
             clubBuying = element.find("table/tr[2]/td[3]/a").attrib['href'].strip()
             clubBuying = clubBuying[clubBuying.rfind("/") + 1:]
-            price = re.sub("[^0-9]", "", element.find("table/tr[2]/td[4]").text.strip())
-            currency = re.sub("[0-9]", "", element.find("table/tr[2]/td[4]").text.strip())
+            price = re.sub("[^0-9]", "", element.find("table/tr[2]/td[4]").text).strip()
+            currency = re.sub("[0-9]", "", element.find("table/tr[2]/td[4]").text).strip()
             lastTransfer["clubSelling"] = clubSelling
             lastTransfer["clubBuying"] = clubBuying
             lastTransfer["price"] = price
@@ -114,7 +113,7 @@ class SkWebsite(SkAPI):
         while i < numberOfLines:
             if "playerCell" in lines[i]:
                 playerCellDiv = []
-                playerCellDiv.append(lines[i])
+                playerCellDiv.append(lines[i].replace("&", "&amp;"))
                 i = i + 1
                 while "div style=\"clear:both" not in lines[i]:
                     playerCellDiv.append(lines[i].replace("&", "&amp;"))
